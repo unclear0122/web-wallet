@@ -1,0 +1,105 @@
+<template>
+
+    <require from="components/filter-field"></require>
+    <require from="components/data-table"></require>
+    <require from="components/modal-dialog"></require>
+
+    <div class="container-fluid">
+
+        <div class="row align-items-center" style="height: 58px; margin-bottom: 36px;">
+            <div class="col-sm-4">
+                <h3>Address Book</h3>
+            </div>
+            <div class="col-sm-7 text-right">
+                <div show.bind="walletManager.hasNotification" class.bind="walletManager.notificationStyle" role="alert" style="margin-bottom: 0px;">
+                    &nbsp; &nbsp; ${walletManager.notification}
+                    <button type="button" class="close" aria-label="Close" click.delegate="walletManager.dismissNotification()"> <!-- data-dismiss="alert" -->
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div show.bind="!walletManager.hasNotification" >
+                    <span style="margin-right: 20px;"><i id="ab_screen_help" class="fa fa-question-circle fa-2x help" ></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-11">
+                <nav class="navbar navbar-expand-lg">
+                    <div class="collapse navbar-collapse">
+                        <div class="navbar-nav mr-auto">
+
+                            <!--
+                            <filter-field
+                                filtered.two-way="filteredAddresses"
+                                unfiltered.bind="unfilteredAddresses"
+                                group-classes="mr-sm-2"
+                                placeholder-text="Filter"
+                                is-button-disabled="true"
+                                filter-by="address,label">
+                            </filter-field>
+
+                            <div class="dropdown">
+                                <button class="btn btn-outline-info" type="button" click.delegate="openAddAddressModal()">
+                                    Add
+                                </button> &nbsp; &nbsp;
+                            </div> &nbsp; &nbsp;
+                            -->
+                            <!--<button class="btn btn-outline-dark ${mayAddToAddressBook ? '' : 'disabled'}" type="button" click.delegate="openAddAddressModal()" disabled.bind="!mayAddToAddressBook">-->
+                            <button class="btn btn-outline-dark" type="button" click.delegate="openAddAddressModal()">
+                                Add
+                            </button> &nbsp; &nbsp;
+                            <button class="btn btn-outline-dark ${selectedAddress ? '' : 'disabled'}" type="button" click.delegate="openManageAddressModal()" disabled.bind="!selectedAddress">
+                                Modify
+                            </button> &nbsp; &nbsp;
+                            <button class="btn btn-outline-dark ${selectedAddress ? '' : 'disabled'}" type="button" click.delegate="removeAddress()" disabled.bind="!selectedAddress">
+                                Remove
+                            </button> &nbsp; &nbsp;
+                        </div>
+                        <form class="form-inline my-2 my-lg-0">
+                            <button class="btn btn-outline-dark ${selectedAddress ? '' : 'disabled'}" type="button" click.delegate="openSendModal()" disabled.bind="!selectedAddress">
+                                Pay to
+                            </button>
+                        </form>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-11">
+                <data-table
+                    data.bind="filteredAddresses"
+                    config.bind="tableProperties"
+                    on-item-selection.call="addressSelected()"
+                    selected-item.two-way="selectedAddress"
+                    refresh-model.bind="addressDataRefreshed"
+                    showHover="true">
+                </data-table>
+            </div>
+            <div class="col-sm-1">
+                &nbsp;
+            </div>
+        </div>
+
+    </div>
+
+    <modal-dialog name="genericModal"></modal-dialog>
+
+    <modal-dialog name="addressBookModal"></modal-dialog>
+
+    <div id="ab_screen_help_content" style='display:none'>
+        <div class="card border-dark">
+            <div class="card-header">Address Book</div>
+            <div class="card-body text-dark">
+                <!--<h5 class="card-title">Transactions</h5>-->
+                <p class="card-text">
+                    The address book is for adding addresses that you frequently want to pay. Adding them here makes it
+                    easy to select one of them during the payment process. The address book size limit currently allows for
+                    a maximum of ${walletManager.CONST.MAX_ADDRESS_BOOK_ENTRIES} addresses. We may revise this in the future to allow for a limit increase.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</template>

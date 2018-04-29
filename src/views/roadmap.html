@@ -1,0 +1,81 @@
+<template>
+
+    <div class="container-fluid">
+
+        <div class="content">
+
+        <div class="row">
+            <div class="col-sm">
+                <h3>Development Roadmap</h3>
+                <br/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-5">
+
+                <strong>Features:</strong> Features planned, or in development.<br/><br/>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start " repeat.for="feature of _roadmap.features" click.delegate="itemClicked()"> <!-- active -->
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">${feature.name}</h5>
+                            <small>${feature.priority}</small>
+                        </div>
+                        <p class="mb-1">${feature.description}</p>
+                        <small>${feature.status}</small>
+                        <br/>
+                    </a>
+                </div>
+                <br/><br/>
+
+                <strong>Under consideration/investigation:</strong> These may or may not happen. A wishlist.<br/><br/>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start " repeat.for="feature of _roadmap.considerations" click.delegate="itemClicked()"> <!-- active -->
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">${feature.name}</h5>
+                        </div>
+                        <p class="mb-1">${feature.description}</p>
+                        <br/>
+                    </a>
+                </div>
+
+            </div>
+            <div class="col-sm-1">
+                &nbsp;
+            </div>
+            <div class="col-sm-5">
+
+                <strong>Bugs:</strong> The following are current known bugs being addressed.<br/><br/>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start " repeat.for="bug of _roadmap.bugs" click.delegate="itemClicked()"> <!-- active -->
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">${bug.name}</h5>
+                            <small>${bug.priority}</small>
+                        </div>
+                        <p class="mb-1">${bug.description}</p>
+                        <br/>
+                    </a>
+                </div>
+                <br/><br/>
+
+                <strong>Improvements:</strong> Neith bugs, nor features. Continious improvement goals.<br/><br/>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start " repeat.for="improvement of _roadmap.improvements" click.delegate="itemClicked()"> <!-- active -->
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">${improvement.name}</h5>
+                        </div>
+                        <p class="mb-1">${improvement.description}</p>
+                        <br/>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        </div>
+
+        <br/><br/>
+
+    </div>
+
+</template>

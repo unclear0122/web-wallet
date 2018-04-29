@@ -1,0 +1,61 @@
+<template>
+
+    <div class="container">
+
+        <form>
+
+            You can safely import any external Beetle address. This action will not adversely affect imported addresses in any way, such as
+            making them unavailable for other wallets. It will only include them for use from this wallet. Note though, that imported addresses
+            are not recoverable using the pass phrase of this wallet. You are responsible for managing their private keys individually.
+            <br/><br/>
+
+            There are two options available for importing external addresseses. The first is as a <strong>watch-only</strong> address, where you
+            do not have to supply any private keys. A necessary limitation is that you will not be able to spend/send from such an address.
+            You will only be able to see the balance. The other option is to supply the private key for an address, which will allow you to
+            spend/send from it. Remember, private keys are kept only in this wallet, they are <strong>NOT</strong> sent or stored anywhere,
+            at any time. From that perspective, you are not entrusting your keys to anyone, including us.
+            <br/><br/>
+
+            <div class="form-group row">
+                <label for="selectedAction" class="col-sm-2 col-form-label">I want to: &nbsp;</label>
+                <div class="col-sm-10">
+                    <select class="form-control" value.bind="selectedAction" change.delegate="actionSelected()">
+                        <option value="import_watch_only_address">Import a watch-only address</option>
+                        <option value="import_spendable_address">Import a spendable address &nbsp;</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="address_label" class="col-sm-2 col-form-label">Label:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="address_label" value.bind="label">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="external_address" class="col-sm-2 col-form-label">Address:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control ${isImportingWatchOnlyAddress && !isValidAddress ? 'is-invalid' : ''}" id="external_address" value.bind="address" input.delegate="validateAddress($event) & debounce:200" readonly.bind="!isImportingWatchOnlyAddress">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="external_privkey" class="col-sm-2 col-form-label">Private Key:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control ${(isImportingSpendableAddress && !isValidPrivateKey) ? 'is-invalid' : ''}" id="external_privkey" value.bind="privkey" input.delegate="validatePrivateKey($event) & debounce:200" readonly.bind="!isImportingSpendableAddress">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">&nbsp;</label>
+                <div class="col-sm-10">
+                    <span class="text-danger" show.bind="error">${error} &nbsp;</span><span class="text-danger">&nbsp;</span>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+</template>

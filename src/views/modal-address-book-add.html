@@ -1,0 +1,32 @@
+<template>
+
+    <div class="container">
+
+        <form>
+
+            <div class="form-group row">
+                <label for="address_label" class="col-sm-2 col-form-label">Label:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="address_label" value.bind="label">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="external_address" class="col-sm-2 col-form-label">Address:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control ${!isValidAddress ? 'is-invalid' : ''}" id="external_address" value.bind="address" input.delegate="validateAddress($event) & debounce:200">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">&nbsp;</label>
+                <div class="col-sm-10">
+                    <span class="text-danger" show.bind="error">${error} &nbsp;</span><span class="text-danger">&nbsp;</span>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+</template>

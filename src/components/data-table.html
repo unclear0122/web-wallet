@@ -1,0 +1,49 @@
+<template>
+
+    <require from="components/data-table-item"></require>
+    <require from="components/data-paginator"></require>
+
+    <table class="table ${config.small ? 'table-sm' : ''} ${config.showStriped ? 'table-striped' : ''} ${config.showHover ? 'table-hover' : ''} ${config.showBorder ? 'table-bordered' : ''}" style="z-index: -1;">
+        <thead> <!-- class="thead-default" -->
+        <tr>
+            <th scope="col" show.bind="config.enableSelection" class="text-center">Select</th>
+            <th scope="col" repeat.for="column of columns" class="${column.class ? column.class : ''}">${column.label}</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr repeat.for="item of visibleData">
+                <td id="${tableName}_${item[itemKey]}" show.bind="config.enableSelection" style="vertical-align: middle;" class="${column.class ? column.class : ''}">
+                    <div if.bind="!config.multiSelect" class="radio text-center">
+                        <label>
+                            <div>
+                                <input type="radio" group="selectedItem" name="selectedItem" model.bind="item" checked.bind="selectedItem" change.trigger="itemSelected()" class=" align-text-bottom">
+                            </div>
+                        </label>
+                    </div>
+                    <div if.bind="config.multiSelect && multiSelectScope == 'value'" class="checkbox text-center">
+                        <label>
+                            <input type="checkbox" model.bind="item[itemKey]" checked.bind="selectedItems" change.trigger="itemSelected()" class=" align-text-bottom">
+                        </label>
+                    </div>
+                    <div if.bind="config.multiSelect && multiSelectScope == 'object'" class="checkbox text-center">
+                        <label>
+                            <input type="checkbox" model.bind="item" checked.bind="selectedItems" change.trigger="itemSelected()" class=" align-text-bottom">
+                        </label>
+                    </div>
+                </td>
+                <td repeat.for="column of columns" style="vertical-align: middle;" class="${column.class ? column.class : ''}">
+                    <data-table-item dom-id="${tableName}_${item[itemKey]}" key.bind="itemKey" item.bind="item" column.bind="column"></data-table-item>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <data-paginator if.bind="hasPaginator"
+        name.bind='config.paginator.name'
+        type.bind='config.paginator.type'
+        limit.bind='config.paginator.pageSize'
+        fetch-data.call='fetchData(request)'
+        data-paged.call='dataPaged(response)'>
+    </data-paginator>
+
+</template>

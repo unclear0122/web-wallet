@@ -1,0 +1,215 @@
+<template>
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-sm">
+                <h3>Preferences</h3><br/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="row">
+                    <legend class="col-form-label col-sm-6 pt-0">Lock masternode funds</legend>
+                    <div class="col-sm text-right">
+                        <div class="form-group">
+                            <select class="form-control" value.bind="preferences.lockMasternodeFunds">
+                                <option value="true">Yes &nbsp; </option>
+                                <option value="false">No &nbsp; </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-1 text-left" style="padding-top: 2px;">
+                <i id="pref_lockmn_help" class="fa fa-question-circle fa-2x help"></i>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="row">
+                    <legend class="col-form-label col-sm-6 pt-0">Display advanced TX info when paying</legend>
+                    <div class="col-sm text-right">
+                        <div class="form-group">
+                            <select class="form-control" value.bind="preferences.displayAdvancedTxDetails">
+                                <option value="true">Yes &nbsp; </option>
+                                <option value="false">No &nbsp; </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-1 text-left" style="padding-top: 2px;">
+                <i id="pref_txinfo_help" class="fa fa-question-circle fa-2x help"></i>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="row">
+                    <legend class="col-form-label col-sm-6 pt-0">Return change to</legend>
+                    <div class="col-sm text-right">
+                        <div class="form-group">
+                            <select class="form-control" value.bind="preferences.returnChangeTo">
+                                <option value="pay_address">The address payment is being made from &nbsp; </option>
+                                <option value="primary_address">My primary wallet address &nbsp; </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-1 text-left" style="padding-top: 2px;">
+                <i id="pref_change_help" class="fa fa-question-circle fa-2x help"></i>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="row">
+                    <legend class="col-form-label col-sm-6 pt-0">UTXO selection strategy</legend>
+                    <div class="col-sm text-right">
+                        <div class="form-group">
+                            <select class="form-control" value.bind="preferences.utxoSelectionStrategy">
+                                <option value="smallest_first">Spend from smallest balance utxo's first &nbsp; </option>
+                                <option value="fewest">Try to cover payment with as few utxo's as possible &nbsp; </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-1 text-left" style="padding-top: 2px;">
+                <i id="pref_utxo_help" class="fa fa-question-circle fa-2x help"></i>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group row">
+                    <div class="col-sm text-right">
+                        <button type="submit" class="btn btn-secondary" click.delegate="savePreferences()">Save preferences</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br/><br/>
+
+        <div class="row">
+            <div class="col-sm-8">
+
+                <h3>Import/Export Wallet</h3><br/>
+
+                While you can safely restore your addresses and funds with the pass phrase you backed up, that typically won't include any
+                additional, application specific things, such as your address book, imported address and preferences. Exporting your wallet will
+                create a file that you can download and store in some place secure, and can be imported again at a later point.<br/><br/>
+
+                There are two export options. The plaintext export will provide you with an unecrypted JSON formatted file containing your
+                wallet data. Since this application only runs on SSL, it should be fine to download your data like this. It allows
+                you to view your data, without having to decrypt anything. For the paranoid, there is also an option to download your wallet
+                data as an encrypted file. The file is encrypted using your given password, and only that password can decrypt the data again.<br/><br/>
+
+                Importing of backed up wallets coming soon.
+
+                <div class="form-group row">
+                    <div class="col-sm text-right">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="exportButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Export wallet
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="exportButton">
+                                <a class="dropdown-item" href="#" click.delegate="exportEncryptedWallet()">Download encrypted wallet</a>
+                                <a class="dropdown-item" href="#" click.delegate="exportJsonWallet()">Download plaintext wallet</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <br/><br/>
+
+        <div class="row">
+            <div class="col-sm-8">
+
+                <h3>Delete Wallet</h3><br/>
+
+                Deleting this wallet will <strong>ONLY</strong> remove the wallet configuration from <strong>this browswer</strong>.
+                It will <strong>NOT</strong> delete any addresses or funds from the blockchain. This is a safe operation, in the sense that you can,
+                at any time, delete the wallet from this particular browser, and then restore it again from another browser (or the same one),
+                as long as you have your wallet pass phrase or export file. The pass phrase and it's associated keys will always be safe, as long as
+                you have a backup copy of them. <br/>
+
+                <br/>
+
+                <div class="form-group row">
+                    <div class="col-sm text-right">
+                        <button type="submit" class="btn btn-danger" click.delegate="deleteWallet()">Delete this wallet!</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="pref_lockmn_help_content" style='display:none'>
+        <div class="card border-dark">
+            <div class="card-header">Lock masternode funds</div>
+            <div class="card-body text-dark">
+                <p class="card-text">
+                    By default the wallet will not select (when making payments) any UTXO's that qualify as masternode outputs. Those funds are locked.
+                    If you want to disable this feature to allow spending from such UTXO's, then you can do so. Enable at own risk!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="pref_txinfo_help_content" style='display:none'>
+        <div class="card border-dark">
+            <div class="card-header">Advanced transaction info</div>
+            <div class="card-body text-dark">
+                <p class="card-text">
+                    This option, if enabled, will show more detailed transaction information during payment, including which UTXO's are selected
+                    as inputs to be spent. If you don't know what this means, or don't care to see such information, then you can disable it.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="pref_change_help_content" style='display:none'>
+        <div class="card border-dark">
+            <div class="card-header">Change handling</div>
+            <div class="card-body text-dark">
+                <p class="card-text">
+                    When making a payment, there will usually be some change that is returned (by default) to the address from which payment
+                    is made. If you wish to rather send the change to your primary wallet address instead, then you can set that preference here.
+                    Take note that this is only the default behaviour. On the payment screen you always have the option to explicitly choose
+                    another change address before making the payment as well.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="pref_utxo_help_content" style='display:none'>
+        <div class="card border-dark">
+            <div class="card-header">UTXO selection strategy</div>
+            <div class="card-body text-dark">
+                <p class="card-text">
+                    When creating a transaction to make a payment, UTXO's are selected until the payment is sufficiently covered. There are two basic
+                    strategies available for selecting UTXO's. <br/><br/>
+
+                    The one option is to start by selecting UTXO's with the smallest balances first, and work up from there until the payment is covered.
+                    This will potentially result in a number of UTXO's being selected and spent, but they will be the ones with the smallest balances.<br/><br/>
+
+                    The other option is to try and cover the payment with as few UTXO's as possible, by starting to find one which has the
+                    closest balance to the payment, and then adding from there. This potentially results in fewer UTXO's being spent.<br/><br/>
+
+                    If you don't know what this means, then just leave the default value. It makes no difference to your funds.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</template>
+
+

@@ -1,0 +1,90 @@
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800);
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i);
+//@import url(https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i,700,700i,900,900i);
+//@import url(https://fonts.googleapis.com/css?family=Julius+Sans+One);
+//@import url(https://fonts.googleapis.com/css?family=Montserrat:700);
+
+// :-o tmp fix for > https://github.com/twbs/bootstrap/issues/25211
+$navbar-dark-toggler-icon-bg:       '';
+$navbar-light-toggler-icon-bg:      '';
+
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gold:     #ba7c37 !default;
+$shine:       $gold !default;
+
+$colors: (
+  "gold": $gold
+);
+
+$theme-colors: (
+    "primary": $shine,
+    "dark": $gray-700,
+    "shine": $shine
+);
+
+//$link-color:                $shine !default;
+//$progress-bar-bg:           $shine !default;
+//$component-active-bg:       $shine !default;
+
+// bootstrap 4
+//@import "~bootstrap/scss/bootstrap";
+
+
+// font awesome 4
+//@import '~font-awesome/scss/font-awesome';
+//@import "~font-awesome/scss/_variables";
+
+//"font-awesome": "^4.7.0",
+//"font-awesome-loader": "^1.0.2",
+//"font-awesome-sass-loader": "^2.0.1",
+
+
+// font awesome 5
+//@import '~@fortawesome/fontawesome-free-webfonts/scss/fontawesome.scss';
+//@import '~@fortawesome/fontawesome-free-webfonts/scss/fa-brands.scss';
+//@import '~@fortawesome/fontawesome-free-webfonts/scss/fa-solid.scss';
+
+
+
+
+/* */
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/root";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+//@import "~bootstrap/scss/images";
+//@import "~bootstrap/scss/code";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/tables";
+@import "~bootstrap/scss/forms";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/transitions";
+@import "~bootstrap/scss/dropdown";
+@import "~bootstrap/scss/button-group";
+@import "~bootstrap/scss/input-group";
+//@import "~bootstrap/scss/custom-forms";
+@import "~bootstrap/scss/nav";
+@import "~bootstrap/scss/navbar";
+@import "~bootstrap/scss/card";
+@import "~bootstrap/scss/breadcrumb";
+@import "~bootstrap/scss/pagination";
+//@import "~bootstrap/scss/badge";
+//@import "~bootstrap/scss/jumbotron";
+@import "~bootstrap/scss/alert";
+//@import "~bootstrap/scss/progress";
+//@import "~bootstrap/scss/media";
+@import "~bootstrap/scss/list-group";
+@import "~bootstrap/scss/close";
+@import "~bootstrap/scss/modal";
+@import "~bootstrap/scss/tooltip";
+@import "~bootstrap/scss/popover";
+@import "~bootstrap/scss/carousel";
+@import "~bootstrap/scss/utilities";
+//@import "~bootstrap/scss/print";
+

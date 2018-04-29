@@ -1,0 +1,11 @@
+
+
+export class Offline {
+
+    constructor() {}
+
+}
+
+
+
+

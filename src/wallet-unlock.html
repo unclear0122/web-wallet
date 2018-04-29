@@ -1,0 +1,25 @@
+<template>
+
+    <div class="d-flex align-content-center flex-wrap text-center unlock">
+        <div class="container">
+            <div class="login-content">
+                <div class="login-logo">
+                    <img class="align-content" src="./images/Beet_R1.png" alt="" width="400px">
+                </div>
+                <div>
+                    <span class="text-white" show.bind="error">${error}</span> &nbsp; <br/><br/>
+                </div>
+                <div class="login-form">
+                    <form >
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input focus="true" type="password" class="form-control" placeholder="Password" value.bind="password">
+                        </div>
+                        <button type="submit" class="btn btn-shine btn-flat m-b-30 m-t-30" click.delegate="unlockWallet()">Unlock</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>

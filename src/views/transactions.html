@@ -1,0 +1,180 @@
+<template>
+
+    <require from="components/filter-field"></require>
+    <require from="components/data-table"></require>
+    <require from="components/modal-dialog"></require>
+
+    <div class="container-fluid">
+
+        <div class="row align-items-center" style="height: 58px; margin-bottom: 36px;">
+            <div class="col-sm-4">
+                <h3>Transactions</h3>
+            </div>
+            <div class="col-sm-7 text-right">
+                <div show.bind="walletManager.hasNotification" class.bind="walletManager.notificationStyle" role="alert" style="margin-bottom: 0px;">
+                    &nbsp; &nbsp; ${walletManager.notification}
+                    <button type="button" class="close" aria-label="Close" click.delegate="walletManager.dismissNotification()"> <!-- data-dismiss="alert" -->
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div show.bind="!walletManager.hasNotification">
+                    <span style="padding-right: 20px;"><i id="tx_screen_help" class="fa fa-question-circle fa-2x help"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <ul class="nav nav-pills" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="payments" aria-selected="true">Payments</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="tx-tab" data-toggle="tab" href="#tx" role="tab" aria-controls="tx" aria-selected="false">Transaction history</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="payments" role="tabpanel" aria-labelledby="payments-tab">
+
+                <br/><br/>
+                <div class="row">
+                    <div class="col-sm-11">
+                        <data-table
+                            data.bind="filteredTransactions"
+                            config.bind="tableProperties"
+                            on-item-selection.call="transactionSelected()"
+                            selected-item.two-way="selectedTransaction"
+                            refresh-model.bind="transactionDataRefreshed"
+                            showHover="true">
+                        </data-table>
+                    </div>
+                    <div class="col-sm-1">
+                        &nbsp;
+                    </div>
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="tx" role="tabpanel" aria-labelledby="tx-tab">
+
+                <br/><br/>
+                Coming soon ...
+
+            </div>
+          </div>
+
+
+
+    </div>
+
+    <modal-dialog name="txDetailModal">
+        <div class="container-fluid" style="padding-top: 10px;">
+
+            <div class="row">
+                <div class="col-sm-3 tx-details-key">
+                    <strong>Tx Date:</strong>
+                </div>
+                <div class="col-sm-9 tx-details-val" style="margin-left: -20px;">
+                    ${selectedTransaction.dateString}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3 tx-details-key" >
+                    <strong>Tx ID:</strong>
+                </div>
+                <div class="col-sm-9 tx-details-val" style="margin-left: -20px;">
+                    ${selectedTransaction.txid}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3 tx-details-key">
+                    <strong>Pay Address:</strong>
+                </div>
+                <div class="col-sm-9 tx-details-val" style="margin-left: -20px;">
+                    ${selectedTransaction.payAddress}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3 tx-details-key">
+                    <strong>Pay Amount:</strong>
+                </div>
+                <div class="col-sm-9 tx-details-val" style="margin-left: -20px;">
+                    ${selectedTransaction.payAmount} BEET
+                </div>
+            </div>
+
+            <hr/>
+
+            <strong>Change from transaction input surplus</strong><br/><br/>
+
+            <div class="row">
+                <div class="col-sm-3 tx-details-key">
+                    Paid to:
+                </div>
+                <div class="col-sm-9 tx-details-val" style="margin-left: -20px;">
+                    ${selectedTransaction.changeAddress}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3 tx-details-key">
+                    Amount:
+                </div>
+                <div class="col-sm-9 tx-details-val" style="margin-left: -20px;">
+                    ${selectedTransaction.changeAmount}
+                </div>
+            </div>
+
+            <hr/>
+
+            <strong>Transaction Inputs</strong><br/><br/>
+
+            <div repeat.for="input of selectedTransaction.inputs">
+                <div class="row">
+                    <div class="col-sm-3 tx-details-key">
+                        Tx ID:
+                    </div>
+                    <div class="col-sm-9 tx-details-val" style="margin-left: -20px;">
+                        ${input.txid}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3 tx-details-key">
+                        Address:
+                    </div>
+                    <div class="col-sm-9 tx-details-val" style="margin-left: -20px;">
+                        ${input.address}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3 tx-details-key">
+                        Amount:
+                    </div>
+                    <div class="col-sm-9 tx-details-val" style="margin-left: -20px;">
+                        ${input.amount}
+                    </div>
+                </div>
+                <br/>
+            </div>
+        </div>
+    </modal-dialog>
+
+    <div id="tx_screen_help_content" style='display:none'>
+        <div class="card border-dark">
+            <div class="card-header">Transactions</div>
+            <div class="card-body text-dark">
+                <!--<h5 class="card-title">Transactions</h5>-->
+                <p class="card-text">
+                    The <strong>payments</strong> tab shows the historic details of payments made from this application. We currently only store details for the
+                    last ${walletManager.CONST.MAX_PAY_HISTORY} payments, after which the oldest get discarded. We may revise this in the future to allow for a
+                    limit increase. You can also view transactions using the block explorer (which keeps all history) or the transaction history tab.<br/><br/>
+
+                    The <strong>transaction history</strong> tab retrieves a larger set of transaction history covering both payments made and received, from the
+                    blockchain. We currently fetch the last ${walletManager.CONST.MAX_TX_HISTORY} transactions.
+
+                </p>
+            </div>
+        </div>
+    </div>
+
+</template>

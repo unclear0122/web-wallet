@@ -1,0 +1,341 @@
+
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gold:     #ba7c37 !default;
+$shine:        $gold !default;
+
+
+@import 'nprogress.css';
+
+
+html {
+    height: 100%;
+}
+
+body {
+    background: #f1f2f7;
+    font-family: 'Open Sans' sans-serif !important;
+    font-weight: 300;
+    font-size: 16px;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body.wallet-app {
+    background: #f1f2f7;
+    font-family: 'Open Sans' sans-serif !important;
+    font-weight: 300;
+    font-size: 16px;
+    display: table;
+}
+
+body.wallet-unlock {
+    background-color: #343A40;
+}
+
+body.wallet-init {
+    font-family: 'Source Sans Pro';
+    font-size: 17px;
+    position: relative;
+    /*background: url(http://localhost:9000/static/img/bg.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;*/
+    background-size: cover;
+}
+
+/*
+body.wallet-init:after {
+    position: fixed;
+    content: "";
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(241, 242, 247, .4);
+    z-index: -1;
+}
+
+.wallet-init-overlay {
+    position: absolute;
+    height: 100%;
+    min-height: 35rem;
+    width: 100%;
+    background-color: #cd9557;
+    background-color: #F1F2F7;
+    opacity: 0.5;
+    z-index: -1;
+}
+
+@media (min-width: 768px) {
+    .wallet-init-overlay {
+        min-height: 0;
+    }
+}
+*/
+
+.wallet-init-aside {
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 1rem;
+}
+
+.wallet-init-aside .aside-bg {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    min-height: 35rem;
+    height: 100%;
+    /* background-color: rgba(0, 46, 102, 0.2); */
+    background-color: #F44336;
+    background-color: #2C3033;
+    background-color: #272C33;
+    transform: skewY(4deg);
+    transform-origin: bottom right;
+}
+
+.wallet-init-aside .aside-content h1 {
+    font-size: 28px;
+}
+
+.wallet-init-aside .aside-content p {
+    font-size: 19px;
+}
+
+.wallet-init-aside .aside-content p strong {
+    font-weight: 700;
+}
+
+@media (min-width: 768px) {
+    .wallet-init-aside {
+        height: 100%;
+        min-height: 0;
+        width: 35rem;
+        padding-bottom: 0;
+    }
+    .wallet-init-aside .aside-bg {
+        min-height: 0;
+        transform: skewX(-5deg);
+        transform-origin: top right;
+    }
+    .wallet-init-aside .aside-content {
+        padding-left: 3rem;
+        padding-right: 6rem;
+    }
+}
+
+.wallet-init-content {
+    position: absolute;
+    margin-bottom: 2rem;
+    width: 100%;
+    color: black;
+}
+
+.wallet-init-content input {
+    font-size: 17px;
+}
+
+.wallet-init-content select {
+    font-size: 17px;
+}
+
+/*
+.wallet-init-content button {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 1rem;
+}
+*/
+
+@media (min-width: 768px) {
+    .wallet-init-content {
+        margin: 0;
+        position: absolute;
+        left: 40.5rem;
+        top: 2rem;
+        width: 52rem;
+        margin-right: 1rem;
+    }
+}
+
+
+
+.td-link {
+    color: $gray-700;
+}
+
+.td-link:active,
+.td-link:focus,
+.td-link:hover {
+    color: black;
+}
+
+.at-selected {
+    color: $gray-500;
+}
+
+
+.popover {
+    width: 100%;
+}
+
+.btn-outline-shine.disabled {
+    border-color: $gray-700;
+    color: $gray-700;
+}
+
+.btn-secondary {
+    background-color: #cd9557;
+    border-color: #cd9557;
+}
+
+.btn-secondary:active,
+.btn-secondary:focus,
+.btn-secondary:hover {
+    background-color: #ba7c37 !important;
+    border-color: #ba7c37 !important;
+}
+
+.btn-secondary.disabled {
+    background-color: #9FA4AA;
+    border-color: #9FA4AA;
+}
+
+.btn-secondary.disabled:active,
+.btn-secondary.disabled:focus,
+.btn-secondary.disabled:hover {
+    background-color: #9FA4AA !important;
+    border-color: #9FA4AA !important;
+}
+
+.btn-dark.disabled {
+    background-color: #9FA4AA;
+    border-color: #9FA4AA;
+}
+
+.btn-dark.disabled:active,
+.btn-dark.disabled:focus,
+.btn-dark.disabled:hover {
+    background-color: #9FA4AA !important;
+    border-color: #9FA4AA !important;
+}
+
+.btn-dark-link {
+    color: $gray-700;
+}
+
+.btn-dark-link:hover {
+    color: $gray-500;
+}
+
+.balance {
+    display: inline-block;
+    text-align: left;
+    .spendable {
+        color: $gold;
+        font-size: 20px;
+        padding-left: 14px;
+    }
+
+}
+
+.tx-details-key {
+    font-weight: 300;
+}
+
+.tx-details-val {
+    padding: 0px;
+}
+
+.card-header {
+    color: $gray-700;
+    font-size: 17px;
+}
+
+.card-title {
+    font-size: 16px;
+}
+
+.card-text {
+    font-size: 15px;
+}
+
+.header {
+    display: inline-block;
+    text-align: right;
+    .display-4 {
+        font-size: 36px;
+    }
+    .subheader {
+        margin-top: -10px;
+        color: $gold;
+        font-size: 24px;
+    }
+}
+
+.available {
+    display: inline-block;
+    text-align: left;
+    .display-5 {
+        font-size: 24px;
+    }
+    .from {
+        color: $gold;
+        color: $gray-700;
+        font-size: 18px;
+    }
+}
+
+.help {
+    padding-right: 8px;
+    color: $gray-400;
+}
+
+
+
+.int_address_bak {
+    color: $gold;
+    color: black;
+    font-weight: 300;
+    font-size: 18px;
+}
+
+
+.version {
+    padding-left: 20px;
+    font-weight: 400;
+
+}
+
+
+/* default (dark) */
+.tpd-skin-dark .tpd-content,
+.tpd-skin-dark .tpd-title,
+.tpd-skin-dark .tpd-close { color: #fff; }
+.tpd-skin-dark .tpd-background-content,
+.tpd-skin-dark .tpd-background-title {
+  background-color: #282828;
+  background-color: #dee2e6;
+}
+.tpd-skin-dark .tpd-background {
+  border-width: 1px;
+  border-color: rgba(255,255,255,.1);
+
+}
+/* line below the title */
+.tpd-skin-dark .tpd-title-wrapper { border-bottom: 1px solid #404040; }
+/* spinner */
+.tpd-skin-dark .tpd-spinner-spin {
+  border-color: rgba(255,255,255,.2);
+  border-left-color: #fff;
+}
+/* links */
+.tpd-skin-dark a { color: #ccc; }
+.tpd-skin-dark a:hover { color: #c0c0c0; }

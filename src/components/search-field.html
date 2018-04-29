@@ -1,0 +1,12 @@
+<template>
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-addon">
+                <span class="fa fa-search"></span>
+            </div>
+            <input type="text" class="form-control" placeholder="${inputText}" input.delegate="searchInputChanged($event) & debounce:300">
+        </div>
+
+    </div>
+    <!-- <button class="btn btn-default ${addClasses}">${buttonText}</button> -->
+</template>

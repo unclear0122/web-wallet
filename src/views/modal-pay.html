@@ -1,0 +1,233 @@
+<template>
+
+    <require from="components/data-table"></require>
+
+    <div class="container">
+
+        <div id="paymentCarouselControls" class="carousel slide" data-interval="" data-keyboard="false" data-ride="false" data-wrap="false">
+            <div class="carousel-inner">
+
+
+                <div class="carousel-item active">
+
+                    <form>
+
+                        <div class="available">
+                            <h3 class="display-5">Available Balance: ${selectedPayFromAddressesSpendableBalance.toBalance(2)} BEET</h3>
+                            <div class="from">${selectedPayFromAddressesSpendableBalanceInfo}</div>
+                        </div>
+
+                        <br/>
+                        <br/>
+
+                        <div class="form-group row">
+                            <label for="amount" class="col-sm-3 col-form-label">Pay Amount:</label>
+                            <div class="col-sm-9 input-group">
+                                <input type="text" class="form-control ${!isValidPayAmount ? 'is-invalid' : ''}" id="amount" value.bind="payAmount" input.delegate="validatePayAmount($event) & debounce:200">
+                                    <div class="input-group-append">
+                                        <!-- <span class="input-group-text" id="basic-addon2">BEET</span> -->
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            BEET &nbsp; &nbsp;
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href="#" click.delegate="spendAllFundsFromSelectedAddresses()">Send all funds from chosen addresses</a>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="to_address" class="col-sm-3 col-form-label">Pay To:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control ${!isValidPayToAddress ? 'is-invalid' : ''}" id="to_address" value.bind="selectedPayToAddress" input.delegate="validatePayToAddress($event) & debounce:200">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="tx_fee" class="col-sm-3 col-form-label">Tx Fee:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="tx_fee" value.bind="txFee" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="change_address" class="col-sm-3 col-form-label">Return Change To: &nbsp;</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" value.bind="selectedChangeAddress" change.delegate="changeAddressSelected()">
+                                    <option repeat.for="address of myChangeAddresses" model.bind="address">${address.labelledAddress}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">&nbsp;</label>
+                            <div class="col-sm-9">
+                                <span class="text-info" show.bind="message">${message} &nbsp;</span>
+                                <span class="text-danger" show.bind="error">${error} &nbsp;</span>
+                                <span>&nbsp;</span>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <div id="accordion">
+
+                        <div class="card">
+                            <div class="card-header" id="my_addresses">
+                                <h5 class="mb-0">
+                                    <button type="button" class="btn btn-dark-link collapsed" data-toggle="collapse" data-target="#my_addresses_content" aria-expanded="true"
+                                        aria-controls="my_addresses_content">
+                                        My Spendable Addresses (Pay From)
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="my_addresses_content" class="collapse" aria-labelledby="my_addresses" data-parent="#accordion">
+                                <div class="card-body">
+                                    <data-table
+                                        data.bind="mySpendableAddresses"
+                                        config.bind="tableProperties"
+                                        on-item-selection.call="payFromAddressSelected()"
+                                        selected-items.two-way="selectedPayFromAddresses"
+                                        refresh-model.bind="mySpendableAddressesRefreshed"
+                                        showHover="true">
+                                    </data-table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header" id="addressbook">
+                                <h5 class="mb-0">
+                                    <button type="button" class="btn btn-dark-link collapsed" data-toggle="collapse" data-target="#addressbook_content" aria-expanded="false"
+                                        aria-controls="addressbook_content">
+                                        Address Book (Pay To)
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="addressbook_content" class="collapse" aria-labelledby="addressbook" data-parent="#accordion">
+                                <div class="card-body">
+                                    <data-table
+                                        data.bind="addressBook"
+                                        config.bind="addrBookTableProperties"
+                                        on-item-selection.call="addressBookItemSelected()"
+                                        selected-item.two-way="selectedAddressBookItem"
+                                        refresh-model.bind="addressesBookRefreshed"
+                                        showHover="true">
+                                    </data-table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="carousel-item">
+
+                    <div show.bind="tx">
+
+                        <div class="row">
+                            <div class="col-sm-2 tx-details-key">
+                                <strong>Tx ID:</strong>
+                            </div>
+                            <div class="col-sm-10 tx-details-val">
+                                ${tx.txid}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2 tx-details-key">
+                                <strong>Pay Address:</strong>
+                            </div>
+                            <div class="col-sm-10 tx-details-val">
+                                ${tx.payAddress}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2 tx-details-key">
+                                <strong>Pay Amount:</strong>
+                            </div>
+                            <div class="col-sm-10 tx-details-val">
+                                ${tx.totals.payAmount.value.toFixed(8)}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2 tx-details-key">
+                                <strong>Tx Fee:</strong>
+                            </div>
+                            <div class="col-sm-10 tx-details-val">
+                                ${tx.totals.txFee.value.toFixed(8)}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2 tx-details-key">
+                                <strong>Total Spend:</strong>
+                            </div>
+                            <div class="col-sm-10 tx-details-val">
+                                ${tx.totals.payAmountInclFees.value.toFixed(8)}
+                            </div>
+                        </div>
+
+                        <div if.bind="displayAdvancedTxInfo">
+
+                            <hr/>
+
+                            You will pay an amount of <strong>${tx.totals.payAmount.value}</strong> BEET to address <strong>${tx.payAddress}</strong>, from
+                            <strong>${tx.fromAddresses}</strong>.<br/><br/>
+
+                            A transaction fee of <strong>${tx.totals.txFee.value}</strong> BEET will be added, resulting in a total
+                            transaction spend of <strong>${tx.totals.payAmountInclFees.value}</strong> BEET.
+                            <br/><br/>
+
+                            The total inputs used for this transaction (the minimum amount of UTXO's used) is <strong>${tx.totals.selectedFromOutputs.value}</strong>
+                            BEET, resulting in an amount of <strong>${tx.totals.changeAmount.value}</strong> BEET in change.
+                            <span show.bind="tx.totals.changeAmount.value > 0">It will be returned to <strong>${tx.changeAddress}</strong>.</span>
+                            <br/><br/>
+
+                            Selected Inputs:<br/>
+                            <ul>
+                                <li repeat.for="input of tx.inputs">
+                                    ${input.txid} &nbsp; &nbsp; &nbsp; ${input.amount} BEET
+                                </li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="carousel-item">
+
+                    <div class="alert alert-danger" role="alert" show.bind="txError">
+                        Payment failed!
+                    </div>
+
+                    <div show.bind="txError">
+                        Unfortunately, it seems like your payment has failed. This can happen for a variety of reasons. Perhaps, if the
+                        error was due to temporary circumstances, try sending the payment again, or otherwise reach out to us on the support
+                        channel on Discord.
+                    </div>
+
+                    <div class="alert alert-success" role="alert" show.bind="confirmedTxId">
+                        Payment sent! Please note that it may take a while before it reflects.
+                    </div>
+
+                    <div show.bind="confirmedTxId">
+                        Your transaction ID for this payment is: <strong>${confirmedTxId}</strong><br/><br/>
+                        The network requires a minimum of 10 confirmations before payments are spendable.
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+</template>

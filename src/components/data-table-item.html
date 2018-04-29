@@ -1,0 +1,72 @@
+<template>
+
+    <require from="formatters/date-format"></require>
+    <require from="formatters/number-format"></require>
+    <require from="formatters/boolean-format"></require>
+    <require from="formatters/file-context-format"></require>
+
+    <a if.bind="(!hasFieldList) && (hasRouteWithoutParams)" route-href='route.bind: column.route.to'>
+        <span if.bind="hasDateConverter" class.bind="itemClass">${itemValue | dateFormat:conversionFormat}</span>
+        <span if.bind="hasNumberConverter" class.bind="itemClass">${itemValue | numberFormat:conversionFormat}</span>
+        <span if.bind="hasBooleanConverter" class.bind="itemClass" innerhtml.bind="itemValue | booleanFormat:conversionFormat"></span>
+        <span if.bind="hasFileContextConverter" class.bind="itemClass">${item | fileContextFormat}</span>
+        <span if.bind="!hasConverter" class.bind="itemClass">${itemValue} &nbsp;</span>
+    </a>
+
+    <!-- <a if.bind="(!hasFieldList) && (hasRouteWithParams)" route-href='route.bind: column.route.to; params.bind: { id:item[column.route.id], ou: "ouID" }'> -->
+    <a if.bind="(!hasFieldList) && (hasRouteWithParams)" route-href='route.bind: column.route.to; params.bind: routeParams'>
+        <span if.bind="hasDateConverter" class.bind="itemClass">${itemValue | dateFormat:conversionFormat}</span>
+        <span if.bind="hasNumberConverter" class.bind="itemClass">${itemValue | numberFormat:conversionFormat}</span>
+        <span if.bind="hasBooleanConverter" class.bind="itemClass" innerhtml.bind="itemValue | booleanFormat:conversionFormat"></span>
+        <span if.bind="hasFileContextConverter" class.bind="itemClass">${item | fileContextFormat}</span>
+        <span if.bind="!hasConverter" class.bind="itemClass">${itemValue} &nbsp;</span>
+    </a>
+
+    <span if.bind="(!hasFieldList) && (!hasRoute) && (!hasTrigger)">
+        <span if.bind="hasDateConverter" class.bind="itemClass">${itemValue | dateFormat:conversionFormat}</span>
+        <span if.bind="hasNumberConverter" class.bind="itemClass">${itemValue | numberFormat:conversionFormat}</span>
+        <span if.bind="hasBooleanConverter" class.bind="itemClass" innerhtml.bind="itemValue | booleanFormat:conversionFormat"></span>
+        <span if.bind="hasFileContextConverter" class.bind="itemClass">${item | fileContextFormat}</span>
+        <div if.bind="!hasConverter" class.bind="itemClass">${itemValue} &nbsp;</div>
+    </span> <!-- let customStyle = resolvePath(this.item._style, this.column.field); -->
+
+    <a if.bind="(!hasFieldList) && (!hasRoute) && (hasTrigger)" href='#' click.delegate="triggerInvoked(column.trigger, item[column.trigger.data] || item)">
+        <span if.bind="hasDateConverter" class.bind="itemClass">${itemValue | dateFormat:conversionFormat}</span>
+        <span if.bind="hasNumberConverter" class.bind="itemClass">${itemValue | numberFormat:conversionFormat}</span>
+        <span if.bind="hasBooleanConverter" class.bind="itemClass" innerhtml.bind="itemValue | booleanFormat:conversionFormat"></span>
+        <span if.bind="hasFileContextConverter" class.bind="itemClass">${item | fileContextFormat}</span>
+        <span if.bind="!hasConverter" class.bind="itemClass">${itemValue} &nbsp;</span>
+    </a>
+
+    <span if.bind="hasFieldList">
+        <span if.bind="(!itemValueList) || (itemValueList.length === 0)" class.bind="itemClass">${column.fieldList.emptyListText}</span>
+        <span if.bind="itemValueList && itemValueList.length > 0">
+            <span repeat.for="itemValue of itemValueList">
+                <span if.bind="(!$last) && (!hasTrigger)" class.bind="itemClass">${itemValue[column.fieldList.label]}${column.fieldList.itemSeparator} &nbsp; </span>
+                <span if.bind="($last) && (!hasTrigger)" class.bind="itemClass"> ${itemValue[column.fieldList.label]}</span>
+                <a if.bind="(!$last) && (hasTrigger)" click.delegate="triggerInvoked(column.fieldList.trigger, itemValue)">${itemValue[column.fieldList.label]}${column.fieldList.itemSeparator} &nbsp; </a>
+                <a if.bind="($last) && (hasTrigger)" click.delegate="triggerInvoked(column.fieldList.trigger, itemValue)"> ${itemValue[column.fieldList.label]}</a>
+            </span>
+        </span>
+    </span>
+
+    <div class="row" if.bind="hasFooter" style="padding-top: 5px;">
+        <div class="${hasFooterRight ? 'col-md-6' : 'col-md-12'}" if.bind="hasFooterLeft">
+            <small>
+                <span class.bind="footerLeftTag" if.bind="footerLeftHasDateConverter">${footerLeftValue | dateFormat:footerLeftConversionFormat}</span>
+                <span class.bind="footerLeftTag" if.bind="footerLeftHasNumberConverter">${footerLeftValue | numberFormat:footerLeftConversionFormat} </span>
+                <span class.bind="footerLeftTag" if.bind="footerLeftHasBooleanConverter">${footerLeftValue | booleanFormat:footerLeftConversionFormat} </span>
+                <span class.bind="footerLeftTag" if.bind="!footerLeftHasConverter">${footerLeftValue}</span>
+            </small>
+        </div>
+        <div class="${hasFooterLeft ? 'col-md-6' : 'col-md-12'} text-right" if.bind="hasFooterRight">
+            <small>
+                <span class.bind="footerRightTag" if.bind="footerRightHasDateConverter">${footerRightValue | dateFormat:footerRightConversionFormat}</span>
+                <span class.bind="footerRightTag" if.bind="footerRightHasNumberConverter">${footerRightValue | numberFormat:footerRightConversionFormat} </span>
+                <span class.bind="footerRightTag" if.bind="footerRightHasBooleanConverter">${footerRightValue | booleanFormat:footerRightConversionFormat} </span>
+                <span class.bind="footerRightTag" if.bind="!footerRightHasConverter">${footerRightValue}</span>
+            </small>
+        </div>
+    </div>
+
+</template>

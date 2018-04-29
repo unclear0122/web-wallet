@@ -1,0 +1,138 @@
+<template>
+
+    <require from="components/filter-field"></require>
+    <require from="components/data-table"></require>
+    <require from="components/modal-dialog"></require>
+
+    <div class="container-fluid">
+
+        <div class="row align-items-end">
+            <div class="col-sm-6">
+                <div class="balance">
+                    <h3 class="total display-4">${totalBalance.toBalance(2)} <span class="coin">BEET</span></h3>
+                    <div class="spendable">${totalSpendableBalance.toBalance(2)} BEET Spendable</div>
+                </div>
+            </div>
+            <div class="col-sm-5 text-right">
+                <div if.bind="walletManager.hasNotification" class.bind="walletManager.notificationStyle" role="alert">
+                    &nbsp; &nbsp; ${walletManager.notification}
+                    <button type="button" class="close" aria-label="Close" click.delegate="walletManager.dismissNotification()"> <!-- data-dismiss="alert" -->
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div if.bind="!walletManager.hasNotification">
+                    <span style="margin-right: 20px;"><i id="balance_screen_help" class="fa fa-question-circle fa-2x help"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+
+        <div class="row">
+            <div class="col-sm-11">
+                <nav class="navbar navbar-expand-lg">
+                    <div class="collapse navbar-collapse">
+                        <div class="navbar-nav mr-auto">
+                            <!--
+                            <filter-field
+                                filtered.two-way="filteredAddresses"
+                                unfiltered.bind="unfilteredAddresses"
+                                group-classes="mr-sm-2"
+                                placeholder-text="Filter"
+                                is-button-disabled="true"
+                                filter-by="address,label">
+                            </filter-field>
+                            -->
+                            <div class="dropdown">
+                                <button class="btn btn-outline-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Add
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item ${mayAddInternalAddresses ? '' : 'disabled'}" href="#" click.delegate="addAddress()">Additional address</a>
+                                    <a class="dropdown-item ${mayImportAddresses ? '' : 'disabled'} disabled" href="#" click.delegate="openImportAddressModal()">Import address</a>
+                                </div>
+                            </div> &nbsp; &nbsp;
+                            <button class="btn btn-outline-dark ${isExactlyOneAddressSelected ? '' : 'disabled'}" type="button" click.delegate="openManageAddressModal()" disabled.bind="!isExactlyOneAddressSelected">
+                                Modify
+                            </button> &nbsp; &nbsp;
+                            <button class="btn btn-outline-dark ${isExactlyOneNonPrimaryAddressSelected ? '' : 'disabled'}" type="button" click.delegate="removeAddress()" disabled.bind="!isExactlyOneNonPrimaryAddressSelected">
+                                Remove
+                            </button> &nbsp; &nbsp;
+                        </div>
+                        <form class="form-inline my-2 my-lg-0">
+                            <button class="btn btn-outline-dark" style="width: 100px;" type="button" click.delegate="openSendModal()">
+                                Pay <span show.bind="isAnyAddressSelected">from</span>
+                            </button> &nbsp; &nbsp;
+                            <button class="btn btn-outline-dark ${isMultipleAddressesSelected ? 'disabled' : ''}" style="width: 110px;" type="button" click.delegate="openReceiveModal()" disabled.bind="isMultipleAddressesSelected">
+                                Receive <span show.bind="isAnyAddressSelected">at</span>
+                            </button>
+                        </form>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-11">
+                <data-table
+                    data.bind="filteredAddresses"
+                    config.bind="tableProperties"
+                    on-item-selection.call="addressSelected()"
+                    selected-items.two-way="selectedAddresses"
+                    refresh-model.bind="addressDataRefreshed"
+                    showHover="true">
+                </data-table>
+            </div>
+            <div class="col-sm-1">
+                &nbsp;
+            </div>
+        </div>
+
+    </div>
+
+    <modal-dialog name="genericModal"></modal-dialog>
+
+    <modal-dialog name="qrModal">
+        <div class="container-fluid text-center" style="padding-top: 40px; padding-bottom: 40px;">
+            <canvas id="qr"></canvas> <br/>
+            ${qrAddress}
+        </div>
+    </modal-dialog>
+
+    <div id="balance_screen_help_content" style='display:none'>
+        <div class="card border-dark">
+            <div class="card-header">Helpful Information</div>
+            <div class="card-body text-dark">
+                <h5 class="card-title">Adding addresses</h5>
+                <p class="card-text">
+                    You have the choice to either add a <strong>new additional address</strong>, or to <strong>import an existing external address</strong>. When adding a new
+                    address, it will be generated using your pass phrase. All addresses derived from your pass phrase are recoverable from it (ie, the phrase will automatically
+                    recover <strong>all</strong> addresses derived from it). These addresses and keys are managed internally by the wallet.
+                </p>
+                <p class="card-text">
+                    When importing an external address, the keys for it are not automatically managed by the wallet, you have to manually specify their details and they cannot
+                    be recovered by your pass phrase. Importing an address will not remove it's funds from any other wallet where it may exist as well.
+                </p>
+                <h5 class="card-title">Modifying and removing addresses</h5>
+                <p class="card-text">
+                    <strong>Managing</strong> an address can only be performed on one address at a time, therefore the button will be disabled unless <strong>exactly one</strong>
+                    address is selected.
+                </p>
+                <p class="card-text">
+                    <strong>Removing</strong> an address does not affect the funds in the address in any way. It only removes the address from this wallet UI. It can always be
+                    recovered with the correct keys. Your primary address cannot be removed.
+                </p>
+                <h5 class="card-title">Sending and receiving funds</h5>
+                <p class="card-text">
+                    The behaviour of buttons on this screen changes, depending on the selection of one or more addresses. For example, if you select an address and click on
+                    <strong>receive</strong>, it will show the QR code for that address. If no address is selected, then it will show the QR code for your primary address.
+                </p>
+                <p class="card-text">
+                    You can <strong>send</strong> from one or multiple addresses, and don't necessarily have to select an address before clicking on send. However, a selection will
+                    pre-populate the send screen accordingly.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</template>

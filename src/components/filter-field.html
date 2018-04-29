@@ -1,0 +1,8 @@
+<template>
+    <div class="input-group ${groupClasses}">
+        <input type="text" class="form-control ${inputClasses}" placeholder="${placeholderText}" aria-label="${placeholderText}" input.delegate="filterInputChanged($event) & debounce:300">
+        <div class="input-group-append" if.bind="!isButtonDisabled">
+            <button class="btn btn-outline-info ${buttonClasses}" type="button">${buttonText}</button>
+        </div>
+    </div>
+</template>

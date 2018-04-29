@@ -1,0 +1,38 @@
+<template>
+
+    <div class="container">
+        It's only possible to modify address details (other than the label) for imported addresses. You can supply a
+        private key to a watch-only address, in order to make it spendable. It's also possible to
+        remove the private key of a spendable address, in order to change it to a watch-only address. If both
+        an address and private key is supplied or changed, they will be validated against each other before
+        you are allowed to save the changes.<br/><br/>
+        <form>
+            <div class="form-group row">
+                <label for="label" class="col-sm-2 col-form-label">Label:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="label" value.bind="label">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="address" class="col-sm-2 col-form-label">Address:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control ${!isValidAddress ? 'is-invalid' : ''}" id="address" value.bind="address" input.delegate="validateAddress($event) & debounce:200" readonly.bind="!isExternalAddress">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="privkey" class="col-sm-2 col-form-label">Private Key:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control ${(!isValidPrivateKey) ? 'is-invalid' : ''}" id="privkey" value.bind="privkey" input.delegate="validatePrivateKey($event) & debounce:200" readonly.bind="!isExternalAddress">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">&nbsp;</label>
+                <div class="col-sm-10">
+                    <span class="text-danger" show.bind="error">${error} &nbsp;</span>
+                    <span class="text-shine" show.bind="info">${info} &nbsp;</span>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</template>

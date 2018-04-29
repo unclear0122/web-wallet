@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- , shrink-to-fit=no -->
+    <meta env="<%- htmlWebpackPlugin.options.metadata.env %>">
+    <base href="<%- htmlWebpackPlugin.options.metadata.baseUrl %>">
+
+    <title>Beetle Wallet</title>
+
+    <link rel="stylesheet" href="static/styles/nprogress.css">
+    <link rel="stylesheet" href="static/styles/loader.css">
+
+</head>
+
+<body aurelia-app="main">
+
+    <div class="splash">
+        <img src="static/images/Beet_W2.png" alt="Logo" class="logo">
+        <div class="title">
+            Loading Application
+        </div>
+        <br/>
+        <div class="message">
+            This application is downloaded in it's entirety to your browser, and handles all <br/>
+            encryption and key management from within the browser, so that you don't have to <br/>
+            entrust any third party with your keys. It may take a moment or two to load.
+        </div>
+    </div>
+
+    <% if (htmlWebpackPlugin.options.env === 'dev') { %>
+        <!-- Webpack Dev Server reload -->
+        <script src="/webpack-dev-server.js"></script>
+    <% } %>
+
+    <script src="static/styles/nprogress.js"></script>
+
+    <script>
+        (function () {
+            document.nprogress = NProgress;
+            document.nprogress.configure({
+                //easing: 'ease',
+                //speed: 500,
+                //trickleSpeed: 200,
+                showSpinner: false,
+            });
+            document.nprogress.start();
+        })();
+    </script>
+
+</body>
+
+</html>

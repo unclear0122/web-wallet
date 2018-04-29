@@ -1,0 +1,13 @@
+<template>
+
+       <select class="form-control" if.bind="!isMultipleSelectionEnabled" value.bind="selectionValue"  disabled.bind="isDisabled" required > <!-- class="select2-single ${addClasses}" -->
+          <option if.bind="addDefaultEmptyOption" value.bind="null">${placeholderText}</option>
+          <option repeat.for="option of options" value.bind='option[optionValueField]'>${option[optionLabelField]} &nbsp; </option>
+        </select>
+
+        <select class="form-control" if.bind="isMultipleSelectionEnabled" multiple="multiple" value.bind="selectionValue" class="select2-multiple ${addClasses}" disabled.bind="isDisabled" required><!-- disabled.bind="isDisabled" -->
+          <option if.bind="addDefaultEmptyOption" value.bind="null">${placeholderText}</option>
+          <option repeat.for="option of options" value.bind='option[optionValueField]'>${option[optionLabelField]} &nbsp; </option>
+        </select>
+
+</template>

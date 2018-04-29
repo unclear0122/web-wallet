@@ -1,0 +1,66 @@
+<template>
+
+      <nav>
+        <ul class="pagination cenetered">
+          <li class="page-item ${hasPreviousPage ? '' : 'disabled'}"><a class="page-link" click.trigger="first()">&nbsp; &lt;&lt; &nbsp;</a></li>
+          <li class="page-item ${hasPreviousPage ? '' : 'disabled'}"><a class="page-link" click.trigger="previous()">&nbsp; &lt; &nbsp;</a></li>
+          <li class="page-item ${hasNextPage ? '' : 'disabled'}"><a class="page-link" click.trigger="next()">&nbsp; &gt; &nbsp;</a></li>
+          <li class="page-item ${hasNextPage ? '' : 'disabled'}"><a class="page-link" click.trigger="last()">&nbsp; &gt;&gt; &nbsp;</a></li>
+        </ul>
+      </nav>
+      <div class="container">
+          ${pageInfo}
+      </div>
+
+  </template>
+
+
+
+    <!--
+    <nav class="level" show.bind="mode === 'compact' && visible === true">
+      <div class="level-left">
+          <div class="level-item">
+            <a class="button ${addClasses} ${hasPreviousPage ? '' : 'disabled'}" click.trigger="previous()">&lt;&lt;</a> &nbsp;
+            <a class="button ${addClasses} ${hasNextPage ? '' : 'disabled'}" click.trigger="next()">&gt;&gt;</a>
+          </div>
+          <div class="level-item">
+            &nbsp; ${info}
+          </div>
+      </div>
+      <div class="level-left">
+          <div class="level-item">
+          </div>
+      </div>
+  </nav>
+
+  <nav class="pagination" show.bind="mode === 'expanded' && visible === true">
+    <ul>
+      <li>
+        <a class="button ${addClasses}" click.trigger="first()">&lt;&lt; </a>
+      </li>
+      <li>
+        <span>&nbsp;</span>
+      </li>
+      <li>
+        <a class="button ${addClasses} ${hasPreviousPage ? '' : 'disabled'}" click.trigger="previous()">&lt;</a>
+      </li>
+      <li>
+        <a class="button ${addClasses} ${hasNextPage ? '' : 'disabled'}" click.trigger="next()">&gt;</a>
+      </li>
+      <li>
+        <span>&nbsp;</span>
+      </li>
+      <li>
+        <a class="button ${addClasses}" click.trigger="last()">&gt;&gt;</a>
+      </li>
+    </ul>
+  </nav>
+  <br/>
+  <nav class="pagination" show.bind="mode === 'expanded' && visible === true">
+    <ul>
+      <li>
+        ${pageInfo}
+      </li>
+    </ul>
+  </nav>
+-->
