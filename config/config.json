@@ -1,17 +1,15 @@
 {
-    "name": "Application",
-    "version": "1.0",
+    "name": "Beetlecoin Web Wallet",
+    "version": "0.8.1",
     "api": {
         "endpoint": "http://localhost:8001/"
     },
     "dev": {
-        "version": "0.8.1",
         "api": {
             "endpoint": "http://localhost:8001/"
         }
     },
     "prod": {
-        "version": "0.8.1",
         "api": {
             "endpoint": "https://api.beetlecoin.network/"
         }
